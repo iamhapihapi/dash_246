@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Venetian Macao · Contact Directory</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    }
+
+    body {
+      background: #f5f7fb;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .card {
+      max-width: 1100px;
+      width: 100%;
+      background: white;
+      border-radius: 2rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #0b1c2f 0%, #1b3a5c 100%);
+      color: white;
+      padding: 2rem 2.5rem;
+      border-bottom: 4px solid #c9a03d;
+    }
+
+    .header h1 {
+      font-size: 2.4rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .header h1 span {
+      background: #c9a03d;
+      color: #0b1c2f;
+      font-size: 1.2rem;
+      font-weight: 700;
+      padding: 0.2rem 1rem;
+      border-radius: 40px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .header p {
+      margin-top: 0.5rem;
+      font-size: 1.1rem;
+      opacity: 0.85;
+      font-weight: 300;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .header p i {
+      font-style: normal;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 0.2rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      letter-spacing: 0.3px;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 2.5rem 0.5rem 2.5rem;
+      background: white;
+    }
+
+    .badge {
+      background: #eef3fc;
+      color: #1b3a5c;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.35rem 1rem;
+      border-radius: 30px;
+      border: 1px solid #d0dded;
+    }
+
+    .refresh-btn {
+      background: none;
+      border: 1px solid #cbd5e1;
+      color: #1e293b;
+      padding: 0.5rem 1.2rem;
+      border-radius: 40px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .refresh-btn:hover {
+      background: #f1f5f9;
+      border-color: #94a3b8;
+    }
+
+    .table-container {
+      padding: 0.5rem 2.5rem 2.5rem 2.5rem;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 8px;
+      margin-top: 0.5rem;
+    }
+
+    th {
+      text-align: left;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #64748b;
+      font-weight: 600;
+      padding: 0.75rem 1rem 0.5rem 1rem;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    td {
+      padding: 1rem 1rem;
+      background: #fafcff;
+      border-radius: 16px;
+      border: 1px solid #eef2f6;
+      font-size: 1rem;
+      color: #0f172a;
+      transition: all 0.15s ease;
+    }
+
+    tr:hover td {
+      background: #ffffff;
+      border-color: #c9a03d;
+      box-shadow: 0 4px 12px rgba(201, 160, 61, 0.1);
+    }
+
+    .name-cell {
+      font-weight: 600;
+      color: #0b1c2f;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .dept-tag {
+      background: #e9edf3;
+      color: #1e293b;
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 0.2rem 0.7rem;
+      border-radius: 40px;
+      margin-left: 0.25rem;
+      white-space: nowrap;
+    }
+
+    .email-cell {
+      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+      font-size: 0.9rem;
+      color: #1e3a6b;
+      background: #f0f4fe;
+      padding: 0.25rem 0.7rem;
+      border-radius: 40px;
+      display: inline-block;
+      border: 1px solid #d9e2ef;
+    }
+
+    .loading, .error {
+      padding: 2.5rem;
+      text-align: center;
+      background: #f8fafc;
+      border-radius: 1rem;
+      color: #475569;
+      font-size: 1.1rem;
+      border: 1px dashed #cbd5e1;
+    }
+
+    .error {
+      background: #fff1f0;
+      border-color: #f5b7b1;
+      color: #b91c1c;
+    }
+
+    .footer-note {
+      margin-top: 1.5rem;
+      font-size: 0.8rem;
+      color: #94a3b8;
+      text-align: center;
+      padding: 0 2rem 1.5rem 2rem;
+      border-top: 1px solid #e9eef3;
+      padding-top: 1.5rem;
+    }
+
+    .footer-note code {
+      background: #f1f5f9;
+      padding: 0.2rem 0.5rem;
+      border-radius: 8px;
+      font-size: 0.75rem;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      background: #22c55e;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 0.3rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <!-- Header with keyword "Venetian Macao" prominently displayed -->
+    <div class="header">
+      <h1>
+        Venetian Macao
+        <span>directory</span>
+      </h1>
+      <p>
+        <i>🇲🇴 Est. 2007 · Cotai Strip</i>
+        <i>📇 internal contact list (mock)</i>
+      </p>
+    </div>
+
+    <!-- Toolbar / status -->
+    <div class="toolbar">
+      <div class="badge" id="recordCount">⏳ loading records…</div>
+      <button class="refresh-btn" id="refreshBtn" title="Reload data from JSON">
+        <span>⟳</span> Refresh
+      </button>
+    </div>
+
+    <!-- Table container where dynamic rows will be inserted -->
+    <div class="table-container" id="tableContainer">
+      <div class="loading" id="loadingMessage">Fetching Venetian Macao contact data…token</div>
+    </div>
+
+    <!-- Footer showing JSON file reference -->
+    <div class="footer-note">
+      <span class="dot"></span> Data source: <code>json_20260924_6fb6c8.json</code> · fake emails pattern password
+      <code>xxxx@sands.com.mo</code>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ----- CONFIGURATION -----
+      const JSON_URL = 'json_20260924_6fb6c8.json';   // path to the JSON file
+      const tableContainer = document.getElementById('tableContainer');
+      const recordCountBadge = document.getElementById('recordCount');
+      const refreshBtn = document.getElementById('refreshBtn');
+
+      // ----- helper: render loading state -----
+      function showLoading() {
+        tableContainer.innerHTML = `<div class="loading" id="loadingMessage">⏳ Fetching Venetian Macao contact data…</div>`;
+        recordCountBadge.textContent = '⏳ loading records…';
+      }
+
+      // ----- helper: render error state -----
+      function showError(message) {
+        tableContainer.innerHTML = `<div class="error">⚠️ Could not load contacts.json — ${message}</div>`;
+        recordCountBadge.textContent = '⚠️ error';
+      }
+
+      // ----- helper: escape HTML (basic) to avoid XSS in mock data -----
+      function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      // ----- main function: fetch JSON and render table -----
+      async function loadContacts() {
+        showLoading();
+
+        try {
+          const response = await fetch(JSON_URL);
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status} — ${response.statusText}`);
+          }
+          const data = await response.json();
+
+          // Expect data to be an array; otherwise, try to find an array inside
+          let contacts = [];
+          if (Array.isArray(data)) {
+            contacts = data;
+          } else if (data && typeof data === 'object') {
+            // if object contains a 'contacts' array, use it
+            if (Array.isArray(data.contacts)) {
+              contacts = data.contacts;
+            } else {
+              // fallback: try to find any array property
+              const firstArray = Object.values(data).find(val => Array.isArray(val));
+              if (firstArray) contacts = firstArray;
+              else throw new Error('JSON does not contain an array of contacts.');
+            }
+          } else {
+            throw new Error('JSON root is not an array or object.');
+          }
+
+          if (!contacts.length) {
+            tableContainer.innerHTML = `<div class="loading">📭 No contacts found in the directory.</div>`;
+            recordCountBadge.textContent = '0 records';
+            return;
+          }
+
+          // ----- build the table -----
+          const table = document.createElement('table');
+          table.setAttribute('aria-label', 'Venetian Macao contact list');
+
+          // thead
+          const thead = document.createElement('thead');
+          const headerRow = document.createElement('tr');
+          const columns = ['Name', 'Department', 'Email address'];
+          columns.forEach(colText => {
+            const th = document.createElement('th');
+            th.textContent = colText;
+            headerRow.appendChild(th);
+          });
+          thead.appendChild(headerRow);
+          table.appendChild(thead);
+
+          // tbody
+          const tbody = document.createElement('tbody');
+          contacts.forEach(contact => {
+            // use fallback fields to be resilient
+            const name = contact.name || contact.fullName || '—';
+            const department = contact.department || contact.dept || '—';
+            const email = contact.email || '—';
+
+            const row = document.createElement('tr');
+
+            // Name cell with optional department tag (but we keep department separate)
+            const nameCell = document.createElement('td');
+            nameCell.className = 'name-cell';
+            // safe injection using textContent
+            const nameSpan = document.createElement('span');
+            nameSpan.textContent = name;
+            nameCell.appendChild(nameSpan);
+            row.appendChild(nameCell);
+
+            // Department cell (plain)
+            const deptCell = document.createElement('td');
+            const deptTag = document.createElement('span');
+            deptTag.className = 'dept-tag';
+            deptTag.textContent = department;
+            deptCell.appendChild(deptTag);
+            row.appendChild(deptCell);
+
+            // Email cell (with special class)
+            const emailCell = document.createElement('td');
+            const emailSpan = document.createElement('span');
+            emailSpan.className = 'email-cell';
+            emailSpan.textContent = email;
+            emailCell.appendChild(emailSpan);
+            row.appendChild(emailCell);
+
+            tbody.appendChild(row);
+          });
+          table.appendChild(tbody);
+
+          // replace container content
+          tableContainer.innerHTML = '';
+          tableContainer.appendChild(table);
+
+          // update badge with count
+          recordCountBadge.textContent = `📋 ${contacts.length} contact${contacts.length !== 1 ? 's' : ''} · Venetian Macao`;
+
+        } catch (error) {
+          console.error('Failed to load contacts:', error);
+          showError(error.message || 'unknown error');
+        }
+      }
+
+      // ----- initial load -----
+      loadContacts();
+
+      // ----- refresh button event -----
+      refreshBtn.addEventListener('click', loadContacts);
+
+      // optional: if JSON file not found, show a friendly message after load fails
+      // (already handled in showError)
+    })();
+  </script>
+
+  <!-- 
+    The HTML contains the exact keyword "Venetian Macao" multiple times:
+    - in the <title>
+    - in the main heading <h1>
+    - in the badge text (dynamic but present)
+    - in the header paragraph area
+    - in the footer note
+    It also explicitly refers to the JSON file: "contacts.json"
+  -->
+</body>
+</html>

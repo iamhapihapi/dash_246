@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Lucas Ferreira",
+    "department": "VIP Services pwd",
+    "email": "lucas.ferreira@sands.com.mo"
+  },
+  {
+    "name": "Mei Lin Chen",
+    "department": "Hotel Operations password",
+    "email": "mei.lin.chen@sands.com.mo"
+  },
+  {
+    "name": "Rafael Mendes",
+    "department": "Gaming Compliance token",
+    "email": "rafael.mendes@sands.com.mo"
+  },
+  {
+    "name": "Sofia Almeida",
+    "department": "Event Management id",
+    "email": "sofia.almeida@sands.com.mo"
+  },
+  {
+    "name": "Kevin Wu",
+    "department": "IT Infrastructure password",
+    "email": "kevin.wu@venetianchina.com"
+  },
+  {
+    "name": "Isabela Rocha",
+    "department": "Marketing & PR token",
+    "email": "isabela.rocha@venetianmacao.com"
+  },
+  {
+    "name": "André Pereira",
+    "department": "Food & Beverage",
+    "email": "andre.pereira@sands.com.mo"
+  },
+  {
+    "name": "Carla Sousa",
+    "department": "Human Resources",
+    "email": "carla.sousa@sands.com.mo"
+  }
+]
